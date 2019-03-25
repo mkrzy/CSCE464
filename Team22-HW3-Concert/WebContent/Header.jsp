@@ -4,7 +4,7 @@
 <html>
 <head>
 	<meta charset="ISO-8859-1">
-	<link rel="stylesheet" href="/Team22-HW3/css/style.css" type="text/css">
+	<link rel="stylesheet" href="/Team22-HW3-Concert/css/style.css" type="text/css">
 </head>
 <body>
 	<div id="navbar">

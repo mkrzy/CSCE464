@@ -6,7 +6,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Register New User</title>
-		<link rel="stylesheet" href="/Team22-HW3/css/style.css" type="text/css">
+		<link rel="stylesheet" href="/Team22-HW3-Concert/css/style.css" type="text/css">
 	</head>
 	
 	<script>
