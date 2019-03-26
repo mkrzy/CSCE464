@@ -4,15 +4,12 @@ package servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
-import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import dataaccessors.BankDB;
 import models.BankAccount;
@@ -38,21 +35,14 @@ public class Bank extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-//		User user = (User) session.getAttribute("userBean");
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
 		int userId = Integer.parseInt(request.getParameter("userId"));
 		double shoppingCartTotal = Double.parseDouble(request.getParameter("shoppingCartTotal"));
 		String cardHolderName = firstName + " " + lastName;
 		
-		System.out.println(cardHolderName);
-		
 		String cardType = request.getParameter("cardType");
-		System.out.println(cardType);
 		String creditCardNumber = request.getParameter("cardNumber");
-		System.out.println(creditCardNumber);
-		System.out.println(request.getParameter("securityCode"));
 		int securityCode = Integer.parseInt(request.getParameter("securityCode"));
 		int expirationMonth = 0;
 		int expirationYear = 0;

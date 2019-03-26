@@ -21,7 +21,8 @@ public class OrdersDB {
 		db.connectMeIn();
 		CreditCard creditCard = anOrder.getCreditCard();
 		double adjustment = anOrder.getTotalCost();
-		String message = CreditCardsDB.adjustCreditCardBalance(creditCard, adjustment);
+		String message = "";
+
 	
 		try {
 			Statement stat = db.conn.createStatement();
@@ -37,6 +38,7 @@ public class OrdersDB {
 			stat.executeUpdate(SQL);
 			Order orderWithId = OrdersDB.getOrder(anOrder);
 			OrdersDB.addOrderItems(orderWithId);
+			message="Order was completed successfully.";
 	
 		} catch (SQLException e) {
 			message = CreditCardsDB.adjustCreditCardBalance(creditCard, (0-adjustment));

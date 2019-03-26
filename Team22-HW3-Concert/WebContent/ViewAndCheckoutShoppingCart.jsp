@@ -5,7 +5,7 @@ pageEncoding="ISO-8859-1"%>
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Checkout</title>
+		<title>Shopping Cart</title>
 		<jsp:include page="Header.jsp" />
 		<%@ taglib prefix="c"  uri="http://java.sun.com/jstl/core_rt" %>
 	</head>
@@ -73,7 +73,10 @@ pageEncoding="ISO-8859-1"%>
 			
 			<div class="pageRow">
 				<p class="left"> Total Cost: <c:out value="${shoppingCart.getPrettyPrice()}"></c:out></p>
-				<a href="ConfirmOrder.jsp"><button class="btn right">Checkout</button></a>	
+				<div class="right">
+					<a href="CustomerHomePage.jsp"><button class="btn">Add More</button></a>
+					<a href="ConfirmOrder.jsp"><button class="btn">Checkout</button></a>
+				</div>
 			</div>
 		</div>
 		

@@ -60,12 +60,12 @@
 									<c:if test = "${not orderItem.cancelled}">
 										<form name="orderItems" action="CancelOrder" method="post">
 											<input type="hidden" id="orderItemInput" name="orderItemId" value="">
-											<button id="${orderItem.id}" onclick="cancelOrderItemFunc()" class="btn btn-sm right padLeft">Cancel</button>
+											<button id="${orderItem.id}" onclick="cancelOrderItemFunc()" class="btn btn-sm right">Cancel</button>
 										</form>
 									</c:if>
 									<form name="viewOrderItem" action="ConcertSearchResults" method="post">
 										<input type="hidden" id="concertChoice" name="concertChoice" value="${orderItem.performance.id}">
-										<button class="btn btn-sm right padRight" type="submit">View</button>
+										<button class="btn btn-sm right" type="submit">View</button>
 									</form>
 								</td>
 							</tr>
