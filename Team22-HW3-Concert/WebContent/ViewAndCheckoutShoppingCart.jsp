@@ -73,7 +73,7 @@ pageEncoding="ISO-8859-1"%>
 			
 			<div class="pageRow">
 				<p class="left"> Total Cost: <c:out value="${shoppingCart.getPrettyPrice()}"></c:out></p>
-				<a href="CustomerTransaction.jsp"><button class="btn right">Checkout</button></a>	
+				<a href="ConfirmOrder.jsp"><button class="btn right">Checkout</button></a>	
 			</div>
 		</div>
 		

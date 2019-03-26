@@ -5,20 +5,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import models.CreditCard;
-import models.User;
+import models.BankAccount;
 
-public class CreditCardsDB {
+public class BankDB {
 	private static Database db = new Database();
 
-	public static CreditCard getCreditCardById(int creditCardId) {
+	public static BankAccount getBankAccountById(int bankAccountId) {
 		db.connectMeIn();
 	    
-	    CreditCard aCreditCard = new CreditCard();
+		BankAccount aBankAccount = new BankAccount();
 
 		try {
 		    Statement stat = db.conn.createStatement();
-		    String SQL = "SELECT * FROM CreditCards WHERE id = " + creditCardId;
+		    String SQL = "SELECT * FROM CreditCards WHERE id = " + bankAccountId;
 
 			ResultSet rs = stat.executeQuery(SQL);
 			
@@ -31,9 +30,7 @@ public class CreditCardsDB {
 				Date expDate = rs.getDate(7);
 				double balance = rs.getDouble(8);
 				
-				User user = UsersDB.getUserById(userId);
-
-				aCreditCard = new CreditCard(creditCardId, user, name, type, ccNumber, cvv, expDate, balance);
+				aBankAccount = new BankAccount(bankAccountId, userId, name, type, ccNumber, cvv, expDate, balance);
 		    }
 		        
 		} catch (SQLException e) {
@@ -41,46 +38,12 @@ public class CreditCardsDB {
 		}
 		
 		db.closeConnection();
-		return aCreditCard;
+		return aBankAccount;
 	}
 	
-	public static CreditCard getCreditCardByNumber(String creditCardNumber) {
+	public static String adjustBankAccountBalance(BankAccount aCard, double adjustment) {
 		db.connectMeIn();
-	    
-	    CreditCard aCreditCard = new CreditCard();
-
-		try {
-		    Statement stat = db.conn.createStatement();
-		    String SQL = "SELECT * FROM CreditCards WHERE creditCardNumber = " + creditCardNumber;
-
-			ResultSet rs = stat.executeQuery(SQL);
-			
-			while (rs.next()){
-				int creditCardId = rs.getInt(1);
-				int userId = rs.getInt(2);
-				String name = rs.getString(3);
-				String ccNumber = rs.getString(4);
-				String type = rs.getString(5);
-				int cvv = rs.getInt(6);
-				Date expDate = rs.getDate(7);
-				double balance = rs.getDouble(8);
-				
-				User user = UsersDB.getUserById(userId);
-
-				aCreditCard = new CreditCard(creditCardId, user, name, type, ccNumber, cvv, expDate, balance);
-		    }
-		        
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		db.closeConnection();
-		return aCreditCard;
-	}
-	
-	public static String adjustCreditCardBalance(CreditCard aCard, double adjustment) {
-		db.connectMeIn();
-		String creditCardNumber = aCard.getCreditCardNumber();
+		String bankAccountNumber = aCard.getBankAccountNumber();
 		String cardHolderName = aCard.getCardHolderName();
 		String cardType = aCard.getCardType();
 		int cvv = aCard.getCvv();
@@ -88,12 +51,12 @@ public class CreditCardsDB {
 		
 		try {
 			Statement stat = db.conn.createStatement();
-			String SQL1 = "SELECT * FROM CreditCards WHERE creditCardNumber = "+creditCardNumber;
+			String SQL1 = "SELECT * FROM CreditCards WHERE creditCardNumber = "+bankAccountNumber;
 			
 			ResultSet rs = stat.executeQuery(SQL1);
 			
 			if(rs.next()) {
-				int creditCardId = rs.getInt(1);
+				int bankAccountId = rs.getInt(1);
 				String rsCardHolderName = rs.getString(3);
 				String rsCardType = rs.getString(5);
 				int rsCvv = rs.getInt(6);
@@ -111,7 +74,7 @@ public class CreditCardsDB {
 					db.closeConnection();
 					return "Transaction was not successful: insufficient funds";
 				} else {
-					String SQL2 = "UPDATE CreditCards SET balance = " + newBalance + " WHERE id = " + creditCardId;
+					String SQL2 = "UPDATE CreditCards SET balance = " + newBalance + " WHERE id = " + bankAccountId;
 					stat.executeUpdate(SQL2);
 					stat.close();
 					db.closeConnection();
@@ -119,8 +82,8 @@ public class CreditCardsDB {
 				}
 				
 			} else {
-				CreditCardsDB.addCreditCard(aCard);
-				CreditCardsDB.adjustCreditCardBalance(aCard, adjustment);
+				BankDB.addBankAccount(aCard);
+				BankDB.adjustBankAccountBalance(aCard, adjustment);
 			}
 			
 		} catch (SQLException e) {
@@ -130,11 +93,11 @@ public class CreditCardsDB {
 		return "Something went wrong";
 	}
 
-	public static CreditCard addCreditCard(CreditCard aCard) {
+	public static BankAccount addBankAccount(BankAccount aCard) {
 		db.connectMeIn();
-		int userId = aCard.getUser().getId();
+		int userId = aCard.getUserId();
 		String cardHolderName = aCard.getCardHolderName();
-		String creditCardNumber = aCard.getCreditCardNumber();
+		String bankAccountNumber = aCard.getBankAccountNumber();
 		String cardType = aCard.getCardType();
 		int cvv = aCard.getCvv();
 		Date date = aCard.getExpirationDate();
@@ -142,22 +105,22 @@ public class CreditCardsDB {
 		
 		try {
 			Statement stat = db.conn.createStatement();
-			String SQL1 = "SELECT * FROM CreditCards WHERE creditCardNumber = '" + creditCardNumber + "' AND cvv = "+cvv;
+			String SQL1 = "SELECT * FROM CreditCards WHERE creditCardNumber = '" + bankAccountNumber + "' AND cvv = "+cvv;
 			
 			ResultSet rs = stat.executeQuery(SQL1);
 			if(rs.first()) {
-				int creditCardId = rs.getInt(1);
-				aCard = CreditCardsDB.getCreditCardById(creditCardId);
+				int bankAccountId = rs.getInt(1);
+				aCard = BankDB.getBankAccountById(bankAccountId);
 				stat.close();
 				db.closeConnection();
 				return aCard;
 			} else {
-				String SQL2 = "INSERT INTO CreditCards(userId, cardHolderName, creditCardNumber, cardType, cvv, expirationDate, balance) VALUES (" + userId + ", '" + cardHolderName + "', '" + creditCardNumber + "', '" + cardType + "', " + cvv + ", '" + date + "', " + balance + ")";
+				String SQL2 = "INSERT INTO CreditCards(userId, cardHolderName, creditCardNumber, cardType, cvv, expirationDate, balance) VALUES (" + userId + ", '" + cardHolderName + "', '" + bankAccountNumber + "', '" + cardType + "', " + cvv + ", '" + date + "', " + balance + ")";
 				
 				stat.executeUpdate(SQL2);
 				stat.close();
 				db.closeConnection();
-				return CreditCardsDB.addCreditCard(aCard);
+				return BankDB.addBankAccount(aCard);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
