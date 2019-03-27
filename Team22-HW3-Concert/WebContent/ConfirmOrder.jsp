@@ -48,14 +48,6 @@
 		}
 		
 		function place_order_function(){
-			alert("calls function");
- 			/* if($("#results").includes("not successful")){
-				alert("not successful");
-				break;
-			}  */
-			
-			alert("successful?");
-
 			var cardNumber = $("#cardNumber").val();
 			var street = $("#street").val();
 			var city = $("#city").val();
