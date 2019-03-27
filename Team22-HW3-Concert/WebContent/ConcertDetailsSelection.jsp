@@ -8,9 +8,32 @@
 		<title>Concert Details</title>
 		<jsp:include page="Header.jsp" />
 		<%@ taglib prefix="c"  uri="http://java.sun.com/jstl/core_rt" %>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		
+		<script>
+		
+			function checkout_function(){
+				var requestType = $("#requestType").val();
+				var performanceId = $("#performanceId").val();
+				var quantity = $("#quantity").val();
+				
+				$.post("../Team22-HW3-Concert/UpdateShoppingCart", {
+					requestType:requestType,
+					performanceId:performanceId,
+					quantity:quantity
+				}, function(data,status){
+					
+					alert(data);
+					$('#navbar').load('Header.jsp #navbar');
+					
+				});
+				
+			}
+		
+		</script>
 	</head>
 	
-<body>
+	<body>
 		
 		<div class="container">
 		
@@ -79,15 +102,14 @@
 			</form>
 			
 			<form name="addToCart" action="UpdateShoppingCart" method="post">
-				<input type="hidden" name="requestType" value="add">
+				<input type="hidden" name="requestType" id="requestType" value="add">
 			
 				<a href="ConcertSearchResults.jsp"><button class="backButton btn btn-sm">Back</button></a>
 				
-				<input type="hidden" name="performanceId" value="${performance.id}">
+				<input type="hidden" name="performanceId" id="performanceId" value="${performance.id}">
 				<span class="right">
-					<input id="quantityInput" class="textInputNiceSmall" type="text" value="1" name="quantity">
-					<button type="submit" class="btn btn-sm padLeft">Add to Cart</button>
-				
+					<input id="quantity" class="textInputNiceSmall" type="text" value="1" name="quantity">
+					<button type="button" class="btn btn-sm padLeft" onClick="checkout_function()">Add to Cart</button>
 				</span>
 			</form>
 		</div>

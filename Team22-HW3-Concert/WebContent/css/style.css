@@ -49,7 +49,7 @@ a {
 	padding: 5px 10px;
 }
 
-#navbar .homeButton, #navbar .viewOrdersButton, #navbar .loginButton, #navbar .logoutButton, #navbar .registerButton {
+#navbar .homeButton, #navbar .viewOrdersButton, #navbar .loginButton, #navbar .logoutButton, #navbar .registerButton, #navbar .checkoutButton {
 	border-radius: 0;
 	padding: 16px 30px;
 	white-space: normal;
@@ -128,7 +128,7 @@ table.noBorder td {
 	border: none;
 }
 
-#navbar .homeButton:hover, .viewOrdersButton:hover, .logoutButton:hover, .registerButton:hover {
+#navbar .homeButton:hover, .viewOrdersButton:hover, .logoutButton:hover, .registerButton:hover .checkoutButton:hover {
 	background-color: #ffffff; !important
 }
 

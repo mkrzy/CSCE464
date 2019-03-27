@@ -1,9 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,6 +40,8 @@ public class UpdateShoppingCart extends HttpServlet {
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
 		List<OrderItem> orderItems = shoppingCart.getOrderItems();
 		String requestType = request.getParameter("requestType");
+		String returnMessage = "There was a problem adding to cart.";
+		
 		if(requestType.equals("add")) {
 			int performanceId = Integer.parseInt(request.getParameter("performanceId"));
 			Performance performance = PerformancesDB.getPerformanceById(performanceId);
@@ -62,9 +64,10 @@ public class UpdateShoppingCart extends HttpServlet {
 					if(!orderItemExisted) {
 						OrderItem orderItem = new OrderItem(performance, quantity);
 						orderItems.add(orderItem);
+						returnMessage = "Successfully added to cart";
 					}
 				}
-			} 
+			}
 		} else if (requestType.equals("delete")) {
 			
 			int orderItemDelete = Integer.parseInt(request.getParameter("orderItemDelete"));
@@ -75,11 +78,11 @@ public class UpdateShoppingCart extends HttpServlet {
 		shoppingCart.setOrderItems(orderItems);
 		
 		session.setAttribute("shoppingCart", shoppingCart);
-
-	    String address = "ViewAndCheckoutShoppingCart.jsp";
-	    RequestDispatcher dispatcher =
-	      request.getRequestDispatcher(address);
-	    dispatcher.forward(request, response);
+		
+		response.setContentType("text/html;charset=UTF-8"); 
+		PrintWriter out = response.getWriter();
+		
+		out.println(returnMessage);
 	}
 
 	/**

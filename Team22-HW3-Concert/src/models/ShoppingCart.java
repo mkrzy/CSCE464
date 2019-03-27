@@ -28,7 +28,11 @@ public class ShoppingCart {
 	}
 	
 	public double getTotalCost() {
-		return totalCost;
+		double tCost = 0;
+		for (OrderItem orderItem : this.orderItems) {
+			tCost += orderItem.getPrice();
+		}
+		return tCost;
 	}
 	
 	public void setTotalCost(List<OrderItem> orderItems) {
