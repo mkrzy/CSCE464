@@ -102,6 +102,10 @@ a {
 	white-space: nowrap;
 }
 
+table.centerThird td:nth-child(3) {
+  text-align: center;
+}
+
 .right {
 	float: right !important;
 }

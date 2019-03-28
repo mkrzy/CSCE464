@@ -32,7 +32,8 @@
 			
 			function add_review_function(){
 				var concertId = $("#concertId").val();
-				var date = $("#dateValue").val();
+				var reviewerName = $("#reviewerName").text();
+				var date = $("#dateValue").text();
 				var rating = $("#rating").val();
 				var review = $("#review").val();
 				
@@ -44,7 +45,23 @@
 				}, function(data,status){
 					
 					alert(data);
-					location.reload();
+					
+					$("#results").html(data);
+					if(data.indexOf("Error") == -1){
+						var table = document.getElementById('reviewTable');
+						var row = table.insertRow(table.rows.length - 1);
+						var nameCell = row.insertCell(0);
+						var dateCell = row.insertCell(1);
+						var ratingCell = row.insertCell(2);
+						var reviewCell = row.insertCell(3);
+						
+						nameCell.innerHTML = reviewerName;
+						dateCell.innerHTML = date;
+						ratingCell.innerHTML = rating;
+						reviewCell.innerHTML = review;
+					}
+					
+
 					
 				});
 				
@@ -55,17 +72,16 @@
 				y = n.getFullYear();
 				m = ("0" + (n.getMonth() + 1)).slice(-2);
 				d = ("0" + n.getDate()).slice(-2);
-				
-				document.write(y + "-" + m + "-" + d);
-				document.getElementById("dateInput").value(y + "-" + m + "-" + d);
+
+				document.getElementById('dateValue').innerHTML = y + "-" + m + "-" + d;
 			}
 		
 		</script>
 	</head>
 	
-	<body>
+	<body onload="todays_date()">
 		
-		<div class="container" id="">
+		<div class="container">
 		
 			<h3>Concert Details</h3>
 			<form name="concertDetails" action="ConcertDetailsSelection" method="post">
@@ -109,8 +125,7 @@
 				
 				<h3>Concert Reviews</h3>
 				
-				<table class="tbl noBorder" style="width: 100%">
-				
+				<table class="tbl noBorder centerThird" id="reviewTable" style="width: 100%">
 					<tr>
 						<td nowrap="nowrap"> Viewer's Name </td>
 						<td nowrap="nowrap"> Review Date </td>
@@ -121,7 +136,7 @@
 						<tr>
 							<td class="colShrink">${review.user.getFullName()}</td>
 							<td class="colShrink">${review.reviewDate}</td>
-							<td style="text-align: center" class="colShrink">${review.rating}</td>
+							<td class="colShrink">${review.rating}</td>
 							<td colspan="2">${review.review}</td>
 						</tr>
 						
@@ -129,7 +144,7 @@
 					
 					<tr>
 						<td class="colShrink"><span id="reviewerName">${userBean.getFullName()}</span></td>
-						<td class="colShrink"><span id="dateValue"><script>todays_date();</script></span></td>
+						<td class="colShrink"><span id="dateValue"></span></td>
 						<td class="colShrink"><input type="range" min="0" max="5" step="0.5" class="textInputNiceSmall" name="rating" id="rating"></td>
 						<td><input type="text" class="textInputNiceDynamic" id="review" name="review"></td>
 						<td class="colShrink"><button type="button" onClick="add_review_function()" class="addButton btn btn-sm">Add Review</button></td>

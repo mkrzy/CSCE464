@@ -69,7 +69,7 @@ public class ReviewsDB {
 			ResultSet rs = stat.executeQuery(SQL1);
 			while (rs.next()){
 				if(userId == rs.getInt(3)) {
-					returnMessage = "You have already submitted a review for this concert.";
+					returnMessage = "Error - You have already submitted a review for this concert.";
 					stat.close();
 					return returnMessage;
 				}
