@@ -47,34 +47,58 @@
 			<h3>Register New User</h3>
 		
 			<form name="registration" action="Registration" onsubmit="return validateForm()" method="post">
-				<table class="tbl noBorder">
-					<tr>
-						<td>
-							Username: 
-						</td>
-						<td>
-							<input type="text" class="textInput" name="username">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Password: 
-						</td>
-						<td>
-							<input type="password" class="textInput" name="password">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Confirm Password: 
-						</td>
-						<td>
-							<input type="password" class="textInput" name="confirmationPassword">
-						</td>
-					</tr>
-
-				</table>
-				<input type="submit" class="btn right" value="Register">
+				<div>
+					<div class="left" style="width:50%">
+						<table class="tbl noBorder">
+							<tr>
+								<td>
+									Username: 
+								</td>
+								<td>
+									<input type="text" class="textInput" name="username">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Password: 
+								</td>
+								<td>
+									<input type="password" class="textInput" name="password">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Confirm Password: 
+								</td>
+								<td>
+									<input type="password" class="textInput" name="confirmationPassword">
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="right" style="width:50%">
+						<table class="tbl noBorder">
+							<tr>
+								<td>
+									First Name: 
+								</td>
+								<td>
+									<input type="text" class="textInput" name="firstName">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Last Name: 
+								</td>
+								<td>
+									<input type="text" class="textInput" name="lastName">
+								</td>
+							</tr>
+		
+						</table>
+					</div>
+				</div>
+				<input type="submit" class="btn right" style="clear: both"value="Register">
 			</form>
 		</div>
 	</body>

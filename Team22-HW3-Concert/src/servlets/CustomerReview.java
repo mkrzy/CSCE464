@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 
 import javax.servlet.RequestDispatcher;
@@ -50,11 +51,11 @@ public class CustomerReview extends HttpServlet {
 		
 		String returnMessage = ReviewsDB.addReview(aReview);
 		request.setAttribute("message", returnMessage);
+
+		response.setContentType("text/html;charset=UTF-8"); 
+		PrintWriter out = response.getWriter(); 
 		
-	    String address = "CustomerReviewConfirmation.jsp";
-	    RequestDispatcher dispatcher =
-	      request.getRequestDispatcher(address);
-	    dispatcher.forward(request, response);
+		out.println(returnMessage);
 	}
 
 	/**

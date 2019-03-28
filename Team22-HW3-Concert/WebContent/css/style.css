@@ -33,7 +33,7 @@ a {
 	color: black;
 	border: 2px solid #b7b7b7;
 	transition-duration: 0.4s;
-	text-decoration: none;
+	-decoration: none;
 	cursor: pointer;
 	text-transform: none;
 	box-shadow: none;
@@ -80,6 +80,26 @@ a {
 .textInputNiceSmall {
 	width: 100px;
 	height: 30px;
+}
+
+.textInputNiceSmallest {
+	width: 50px !important; 
+	height: 30px;
+}
+
+.textInputNiceMedium {
+	width: 600px;
+	height: 30px;
+}
+
+.textInputNiceDynamic {
+	width: 100%;
+	height: 30px;
+}
+
+.colShrink {
+	width: 1px;
+	white-space: nowrap;
 }
 
 .right {

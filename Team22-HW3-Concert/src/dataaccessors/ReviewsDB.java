@@ -61,17 +61,19 @@ public class ReviewsDB {
 			String review = aReview.getReview();
 			double rating = aReview.getRating();
 			Date date = aReview.getReviewDate();
+			String dateString = "DATE '" + date.toString()+"'";
 			
-			String SQL1 = "SELECT * FROM CustomerReviews";
-			String SQL2 = "INSERT INTO CustomerReviews(concertId, userId, review, rating, reviewDate) VALUES (" + concertId + ", " + userId + ", '" + review + "', " + rating + ", " + date + ");";
+			String SQL1 = "SELECT * FROM CustomerReviews WHERE concertId = "+concertId;
+			String SQL2 = "INSERT INTO CustomerReviews(concertId, userId, review, rating, reviewDate) VALUES (" + concertId + ", " + userId + ", '" + review + "', " + rating + ", " + dateString + ");";
 			
 			ResultSet rs = stat.executeQuery(SQL1);
 			while (rs.next()){
 				if(userId == rs.getInt(3)) {
 					returnMessage = "You have already submitted a review for this concert.";
+					stat.close();
+					return returnMessage;
 				}
 			}
-			stat.close();
 			
 			stat.executeUpdate(SQL2);
 			returnMessage = "Your review has been added!";

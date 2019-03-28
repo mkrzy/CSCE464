@@ -32,7 +32,9 @@ public class Registration extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		User aUser = new User(username, password);
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		User aUser = new User(username, password, firstName, lastName);
 						
 		boolean userExists = UsersDB.userExists(username);
 		

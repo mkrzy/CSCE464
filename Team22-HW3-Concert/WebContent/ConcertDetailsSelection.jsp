@@ -29,17 +29,47 @@
 				});
 				
 			}
+			
+			function add_review_function(){
+				var concertId = $("#concertId").val();
+				var date = $("#dateValue").val();
+				var rating = $("#rating").val();
+				var review = $("#review").val();
+				
+				$.post("../Team22-HW3-Concert/CustomerReview", {
+					concertId:concertId,
+					date:date,
+					rating:rating,
+					review:review
+				}, function(data,status){
+					
+					alert(data);
+					location.reload();
+					
+				});
+				
+			}
+			
+			function todays_date(){
+				n =  new Date();
+				y = n.getFullYear();
+				m = ("0" + (n.getMonth() + 1)).slice(-2);
+				d = ("0" + n.getDate()).slice(-2);
+				
+				document.write(y + "-" + m + "-" + d);
+				document.getElementById("dateInput").value(y + "-" + m + "-" + d);
+			}
 		
 		</script>
 	</head>
 	
 	<body>
 		
-		<div class="container">
+		<div class="container" id="">
 		
 			<h3>Concert Details</h3>
 			<form name="concertDetails" action="ConcertDetailsSelection" method="post">
-				<input type="hidden" name="concertId" value="${performance.concert.id}">
+				<input type="hidden" name="concertId" id="concertId" value="${performance.concert.id}">
 				<table class="tbl noBorder">
 				
 					<tr>
@@ -78,37 +108,46 @@
 				</table><br>
 				
 				<h3>Concert Reviews</h3>
-				<button type="submit" class="addButton btn btn-sm right">Add Review</button>
 				
-				<table class="tbl noBorder">
+				<table class="tbl noBorder" style="width: 100%">
 				
 					<tr>
 						<td nowrap="nowrap"> Viewer's Name </td>
 						<td nowrap="nowrap"> Review Date </td>
-						<td nowrap="nowrap"> Rating </td>
-						<td nowrap="nowrap"> Review </td>
+						<td nowrap="nowrap" style="text-align: center"> Rating 0-5</td>
+						<td colspan="2" nowrap="nowrap"> Review </td>
 					</tr>
 					<c:forEach var="review" items="${reviews}">
 						<tr>
-							<td>${review.user.getFullName()}</td>
-							<td>${review.reviewDate}</td>
-							<td>${review.rating}</td>
-							<td>${review.review}</td>
+							<td class="colShrink">${review.user.getFullName()}</td>
+							<td class="colShrink">${review.reviewDate}</td>
+							<td style="text-align: center" class="colShrink">${review.rating}</td>
+							<td colspan="2">${review.review}</td>
 						</tr>
 						
 					</c:forEach>
+					
+					<tr>
+						<td class="colShrink"><span id="reviewerName">${userBean.getFullName()}</span></td>
+						<td class="colShrink"><span id="dateValue"><script>todays_date();</script></span></td>
+						<td class="colShrink"><input type="range" min="0" max="5" step="0.5" class="textInputNiceSmall" name="rating" id="rating"></td>
+						<td><input type="text" class="textInputNiceDynamic" id="review" name="review"></td>
+						<td class="colShrink"><button type="button" onClick="add_review_function()" class="addButton btn btn-sm">Add Review</button></td>
+					</tr>
 				
-				</table><br><br><br>
-			</form>
+				</table>
+				
+			</form><br><br><br>
+			
+			<button class="backButton btn btn-sm" onclick="history.back()">Back</button>
 			
 			<form name="addToCart" action="UpdateShoppingCart" method="post">
 				<input type="hidden" name="requestType" id="requestType" value="add">
 			
-				<a href="ConcertSearchResults.jsp"><button class="backButton btn btn-sm">Back</button></a>
 				
 				<input type="hidden" name="performanceId" id="performanceId" value="${performance.id}">
 				<span class="right">
-					<input id="quantity" class="textInputNiceSmall" type="text" value="1" name="quantity">
+					<input id="quantity" class="textInputNiceSmallest" type="text" value="1" name="quantity">
 					<button type="button" class="btn btn-sm padLeft" onClick="checkout_function()">Add to Cart</button>
 				</span>
 			</form>
