@@ -1,8 +1,8 @@
 package dataaccessors;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import models.Concert;
 
@@ -13,13 +13,12 @@ public class ConcertsDB {
 	public static Concert getConcertById(int id) {
 		db.connectMeIn();
 		String SQL = "SELECT * FROM Concerts";
-	    Statement stat;
 	    
 		Concert aConcert = new Concert();
 
 		try {
-			stat = db.conn.createStatement();
-			ResultSet rs = stat.executeQuery(SQL);
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			ResultSet rs = stat.executeQuery();
 			
 			while (rs.next()){
 				if(id == rs.getInt(1)) {

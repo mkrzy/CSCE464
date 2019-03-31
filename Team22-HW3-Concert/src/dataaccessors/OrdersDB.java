@@ -1,9 +1,9 @@
 package dataaccessors;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,17 +25,23 @@ public class OrdersDB {
 
 	
 		try {
-			Statement stat = db.conn.createStatement();
-
 			int customerId = anOrder.getCustomer().getId();
 			double totalCost = anOrder.getTotalCost();
 			int creditCardId = anOrder.getCreditCard().getId();
 			int billingAddressId = anOrder.getBillingAddress().getId();
 			Date orderDate = anOrder.getOrderDate();
-			String orderDateString = "DATE '" + orderDate.toString()+"'";
 
-			String SQL = "INSERT INTO Orders(customerId, totalCost, creditCardId, billingAddressId, orderDate) VALUES (" + customerId + ", " + totalCost + ", " + creditCardId + ", " + billingAddressId + ", " + orderDateString + ")";
-			stat.executeUpdate(SQL);
+			String SQL = "INSERT INTO Orders(customerId, totalCost, creditCardId, billingAddressId, orderDate) VALUES (?, ?, ?, ?, DATE '?')";
+
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			stat.setInt(1, customerId);
+			stat.setDouble(2, totalCost);
+			stat.setInt(3, creditCardId);
+			stat.setInt(4, billingAddressId);
+			stat.setDate(5, orderDate);
+			
+			stat.executeUpdate();
+			
 			Order orderWithId = OrdersDB.getOrder(anOrder);
 			OrdersDB.addOrderItems(orderWithId);
 			message="Order was completed successfully.";
@@ -58,11 +64,14 @@ public class OrdersDB {
 		List<OrderItem> orderItems = anOrder.getOrderItems();
 		
 		try {
-			Statement stat = db.conn.createStatement();
+			String SQL = "SELECT * FROM Orders WHERE customerId=? AND creditCardId=? AND billingAddressId=? AND orderDate=?";
 
-			String SQL = "SELECT * FROM Orders WHERE customerId='" + customerId + "' AND creditCardId='" + creditCardId + "' AND billingAddressId='" + billingAddressId + "' AND orderDate='" + orderDate + "';";
-
-			ResultSet rs = stat.executeQuery(SQL);
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			stat.setInt(1, customerId);
+			stat.setInt(2, creditCardId);
+			stat.setInt(3, billingAddressId);
+			stat.setDate(4, orderDate);
+			ResultSet rs = stat.executeQuery();
 
 			if(rs.next()) {
 				int orderId = rs.getInt(1);
@@ -92,12 +101,16 @@ public class OrdersDB {
 			int quantity = orderItem.getQuantity();
 			
 			try {
-				Statement stat = db.conn.createStatement();
 				PerformancesDB.updateSeatsPurchased(performance, quantity);
 
-				String SQL = "INSERT INTO OrderItems(orderId, performanceId, quantity) VALUES (" + orderId + ", " + performanceId + ", " + quantity + ");";
+				String SQL = "INSERT INTO OrderItems(orderId, performanceId, quantity) VALUES (?, ?, ?)";
+				
+				PreparedStatement stat = db.conn.prepareStatement(SQL);
+				stat.setInt(1, orderId);
+				stat.setInt(2, performanceId);
+				stat.setInt(3, quantity);
 			
-				stat.executeUpdate(SQL);
+				stat.executeUpdate();
 				stat.close();
 		
 			} catch (SQLException e) {
@@ -109,14 +122,14 @@ public class OrdersDB {
 
 	public static List<Order> getOrdersByCustomerId(int id) {
 		db.connectMeIn();
-		String SQL = "SELECT * FROM Orders WHERE customerId = " + id;
-		Statement stat;
+		String SQL = "SELECT * FROM Orders WHERE customerId = ?";
 		
 	    List<Order> orders = new ArrayList<Order>();
 	    
 		try {
-			stat = db.conn.createStatement();
-			ResultSet rs = stat.executeQuery(SQL);
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			stat.setInt(1, id);
+			ResultSet rs = stat.executeQuery();
 			
 			while (rs.next()){
 				int orderId = rs.getInt(1);
@@ -148,13 +161,13 @@ public class OrdersDB {
 	private static List<OrderItem> getOrderItemsByOrderId(int orderId) {
 		db.connectMeIn();
 		String SQL = "SELECT * FROM OrderItems WHERE orderId = " + orderId + ";";
-		Statement stat;
 		
 	    List<OrderItem> orderItems = new ArrayList<OrderItem>();
 	    
 		try {
-			stat = db.conn.createStatement();
-			ResultSet rs = stat.executeQuery(SQL);
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			stat.setInt(1, orderId);
+			ResultSet rs = stat.executeQuery();
 			
 			while (rs.next()){
 				int orderItemId = rs.getInt(1);
@@ -182,14 +195,14 @@ public class OrdersDB {
 
 	public static Order getOrderById(int orderId) {
 		db.connectMeIn();
-		String SQL = "SELECT * FROM Orders WHERE id = " + orderId;
-		Statement stat;
+		String SQL = "SELECT * FROM Orders WHERE id = ?";
 		
 		Order anOrder = new Order();
 	    
 		try {
-			stat = db.conn.createStatement();
-			ResultSet rs = stat.executeQuery(SQL);
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			stat.setInt(1, orderId);
+			ResultSet rs = stat.executeQuery();
 			
 			while (rs.next()){
 				int customerId = rs.getInt(2);
@@ -218,14 +231,14 @@ public class OrdersDB {
 
 	public static OrderItem getOrderItemById(int orderItemId) {
 		db.connectMeIn();
-		String SQL = "SELECT * FROM OrderItems WHERE id = " + orderItemId;
-		Statement stat;
+		String SQL = "SELECT * FROM OrderItems WHERE id = ?" + orderItemId;
 		
 		OrderItem anOrderItem = new OrderItem();
 	    
 		try {
-			stat = db.conn.createStatement();
-			ResultSet rs = stat.executeQuery(SQL);
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			stat.setInt(1, orderItemId);
+			ResultSet rs = stat.executeQuery();
 			
 			while (rs.next()){
 				int orderId = rs.getInt(2);
@@ -258,20 +271,26 @@ public class OrdersDB {
 		int quantityAdjustment = (0-orderItemToCancel.getQuantity());
 	
 		try {
-			Statement stat = db.conn.createStatement();
-
-			String SQL1 = "select * from OrderItems where id = " + orderItemToCancel.getId();
+			String SQL = "select * from OrderItems where id = ?";
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			stat.setInt(1, orderItemToCancel.getId());
 			
-			ResultSet rs = stat.executeQuery(SQL1);
+			ResultSet rs = stat.executeQuery();
 			
 			if(rs.next()) {
-				String SQL2 = "UPDATE OrderItems SET cancelled = 1 WHERE id = " + orderItemToCancel.getId();
-				stat.executeUpdate(SQL2);
+				String SQL2 = "UPDATE OrderItems SET cancelled = 1 WHERE id = ?";
+				PreparedStatement stat2 = db.conn.prepareStatement(SQL2);
+				stat2.setInt(1, orderItemToCancel.getId());
+				stat2.executeUpdate();
 				
 				CreditCardsDB.adjustCreditCardBalance(creditCard, adjustment);
 				
 				PerformancesDB.updateSeatsPurchased(performance, quantityAdjustment);
+				
+				stat2.close();
 			}
+			
+			stat.close();
 	
 		} catch (SQLException e) {
 			e.printStackTrace();

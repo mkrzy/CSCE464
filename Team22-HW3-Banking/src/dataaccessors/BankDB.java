@@ -1,9 +1,9 @@
 package dataaccessors;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import models.BankAccount;
 
@@ -14,12 +14,13 @@ public class BankDB {
 		db.connectMeIn();
 	    
 		BankAccount aBankAccount = new BankAccount();
+	    String SQL = "SELECT * FROM CreditCards WHERE id = ?";
 
 		try {
-		    Statement stat = db.conn.createStatement();
-		    String SQL = "SELECT * FROM CreditCards WHERE id = " + bankAccountId;
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			stat.setInt(1, bankAccountId);
 
-			ResultSet rs = stat.executeQuery(SQL);
+			ResultSet rs = stat.executeQuery();
 			
 			while (rs.next()){
 				int userId = rs.getInt(2);
@@ -48,12 +49,13 @@ public class BankDB {
 		String cardType = aCard.getCardType();
 		int cvv = aCard.getCvv();
 		Date expirationDate = aCard.getExpirationDate();
+		String SQL1 = "SELECT * FROM CreditCards WHERE creditCardNumber = ?";
 		
 		try {
-			Statement stat = db.conn.createStatement();
-			String SQL1 = "SELECT * FROM CreditCards WHERE creditCardNumber = "+bankAccountNumber;
+			PreparedStatement stat = db.conn.prepareStatement(SQL1);
+			stat.setString(1, bankAccountNumber);
 			
-			ResultSet rs = stat.executeQuery(SQL1);
+			ResultSet rs = stat.executeQuery();
 			
 			if(rs.next()) {
 				int bankAccountId = rs.getInt(1);
@@ -102,12 +104,14 @@ public class BankDB {
 		int cvv = aCard.getCvv();
 		Date date = aCard.getExpirationDate();
 		double balance = 100.0; //Balance not specified: double balance = aCard.getBalance();
+		String SQL1 = "SELECT * FROM CreditCards WHERE creditCardNumber = ? AND cvv = ?";
 		
 		try {
-			Statement stat = db.conn.createStatement();
-			String SQL1 = "SELECT * FROM CreditCards WHERE creditCardNumber = '" + bankAccountNumber + "' AND cvv = "+cvv;
+			PreparedStatement stat = db.conn.prepareStatement(SQL1);
+			stat.setString(1, bankAccountNumber);
+			stat.setInt(2, cvv);
+			ResultSet rs = stat.executeQuery();
 			
-			ResultSet rs = stat.executeQuery(SQL1);
 			if(rs.first()) {
 				int bankAccountId = rs.getInt(1);
 				aCard = BankDB.getBankAccountById(bankAccountId);
@@ -115,11 +119,20 @@ public class BankDB {
 				db.closeConnection();
 				return aCard;
 			} else {
-				String SQL2 = "INSERT INTO CreditCards(userId, cardHolderName, creditCardNumber, cardType, cvv, expirationDate, balance) VALUES (" + userId + ", '" + cardHolderName + "', '" + bankAccountNumber + "', '" + cardType + "', " + cvv + ", '" + date + "', " + balance + ")";
+				String SQL2 = "INSERT INTO CreditCards(userId, cardHolderName, creditCardNumber, cardType, cvv, expirationDate, balance) VALUES (?, ?, ?, ?, ?, DATE '?', ?)";
 				
-				stat.executeUpdate(SQL2);
-				stat.close();
+				PreparedStatement stat2 = db.conn.prepareStatement(SQL2);
+				stat2.setInt(1, userId);
+				stat2.setString(2, cardHolderName);
+				stat2.setString(3, bankAccountNumber);
+				stat2.setString(4, cardType);
+				stat2.setInt(5, cvv);
+				stat2.setDate(6, date);
+				stat2.setDouble(7, balance);
+				stat2.executeUpdate();
+				stat2.close();
 				db.closeConnection();
+				
 				return BankDB.addBankAccount(aCard);
 			}
 		} catch (SQLException e) {

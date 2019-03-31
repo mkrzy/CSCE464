@@ -1,8 +1,8 @@
 package dataaccessors;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import models.Address;
 
@@ -12,11 +12,16 @@ public class AddressesDB {
 	//only the AddressesDB class should access this method
 	private static void addAddress(String street, String city, String state, int zip) {
 		db.connectMeIn();
-		String SQL = "INSERT INTO Addresses(street, city, state, postalCode) VALUES ('" + street + "', '" + city + "', '" + state + "', " + zip + ");";
+		String SQL = "INSERT INTO Addresses(street, city, state, postalCode) VALUES (?,?,?,?)";
 		
 		try {
-			Statement stat = db.conn.createStatement();
-	  		stat.executeUpdate(SQL);
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			stat.setString(1, street);
+			stat.setString(2, city);
+			stat.setString(3, state);
+			stat.setInt(4, zip);
+			
+	  		stat.executeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -30,12 +35,16 @@ public class AddressesDB {
 		String state = anAddress.getState();
 		int zip = anAddress.getZip();
 		
+		String SQL = "SELECT * FROM Addresses WHERE street = ? AND city = ? AND state = ? AND postalCode = ?";
+		
 		try {
-			Statement stat = db.conn.createStatement();
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			stat.setString(1, street);
+			stat.setString(2, city);
+			stat.setString(3, state);
+			stat.setInt(4, zip);
 
-			String SQL = "SELECT * FROM Addresses WHERE street='" + street + "' AND city='" + city + "' AND state='" + state + "' AND postalCode=" + zip + ";";
-
-			ResultSet rs = stat.executeQuery(SQL);
+			ResultSet rs = stat.executeQuery();
 
 			if(rs.next()) {
 				int addressId = rs.getInt(1);
@@ -61,13 +70,12 @@ public class AddressesDB {
 	public static Address getAddressById(int id) {
 		db.connectMeIn();
 		String SQL = "SELECT * FROM Addresses";
-	    Statement stat;
 	    
 		Address anAddress = new Address();
 
 		try {
-			stat = db.conn.createStatement();
-			ResultSet rs = stat.executeQuery(SQL);
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			ResultSet rs = stat.executeQuery();
 			
 			while (rs.next()){
 				if(id == rs.getInt(1)) {

@@ -1,9 +1,9 @@
 package dataaccessors;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +18,12 @@ public class ReviewsDB {
 	public static List<Review> getReviewsByConcertId(int concertId){
 		db.connectMeIn();
 		String SQL = "SELECT * from CustomerReviews";
-	    Statement stat;
 	    
 	    List<Review> reviews = new ArrayList<Review>();
 
 		try {
-			stat = db.conn.createStatement();
-			ResultSet rs = stat.executeQuery(SQL);
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			ResultSet rs = stat.executeQuery();
 			
 			while (rs.next()){
 				if(concertId == rs.getInt(2)) {
@@ -54,19 +53,21 @@ public class ReviewsDB {
 		db.connectMeIn();
 		String returnMessage = "";
 		
+		String SQL1 = "SELECT * FROM CustomerReviews WHERE concertId = ?";
+		String SQL2 = "INSERT INTO CustomerReviews(concertId, userId, review, rating, reviewDate) VALUES (?, ?, ?, ?, DATE '?')";
+		
+		
 		try {
-			Statement stat = db.conn.createStatement();
 			int concertId = aReview.getConcert().getId();
 			int userId = aReview.getUser().getId();
 			String review = aReview.getReview();
 			double rating = aReview.getRating();
 			Date date = aReview.getReviewDate();
-			String dateString = "DATE '" + date.toString()+"'";
+
+			PreparedStatement stat = db.conn.prepareStatement(SQL1);
+			stat.setInt(1, concertId);
+			ResultSet rs = stat.executeQuery();
 			
-			String SQL1 = "SELECT * FROM CustomerReviews WHERE concertId = "+concertId;
-			String SQL2 = "INSERT INTO CustomerReviews(concertId, userId, review, rating, reviewDate) VALUES (" + concertId + ", " + userId + ", '" + review + "', " + rating + ", " + dateString + ");";
-			
-			ResultSet rs = stat.executeQuery(SQL1);
 			while (rs.next()){
 				if(userId == rs.getInt(3)) {
 					returnMessage = "Error - You have already submitted a review for this concert.";
@@ -75,9 +76,16 @@ public class ReviewsDB {
 				}
 			}
 			
-			stat.executeUpdate(SQL2);
+			PreparedStatement stat2 = db.conn.prepareStatement(SQL2);
+			stat2.setInt(1, concertId);
+			stat2.setInt(2, userId);
+			stat2.setString(3, review);
+			stat2.setDouble(4, rating);
+			stat2.setDate(5, date);
+			stat2.executeUpdate();
+			
 			returnMessage = "Your review has been added!";
-			stat.close();
+			stat2.close();
 	
 		} catch (SQLException e) {
 			e.printStackTrace();

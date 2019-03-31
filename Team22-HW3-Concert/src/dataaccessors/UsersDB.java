@@ -1,8 +1,8 @@
 package dataaccessors;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import models.User;
 
@@ -13,23 +13,23 @@ public class UsersDB {
     public static void registerUser(User aUser) {
        	db.connectMeIn();
        	try {
-  		  db.stmt = db.conn.createStatement();
-  		  String sql;
+       		String SQL = "INSERT INTO Users (FirstName, LastName, Username, Password) VALUES (?,?,?,?)";
   		  
-  		  String firstName = aUser.getFirstName();
-  		  String lastName = aUser.getLastName();
-  		  String username = aUser.getUsername();
-  		  String password = aUser.getPassword();
+       		String firstName = aUser.getFirstName();
+       		String lastName = aUser.getLastName();
+       		String username = aUser.getUsername();
+       		String password = aUser.getPassword();
 
-  		  sql = "INSERT INTO Users (FirstName, LastName, Username, Password)" +
-  		          "VALUES ('" + firstName +
-  				  "', '" + lastName + 
-  				  "', '" + username + 
-  				  "', '" + password + "')";
-  		  db.stmt.executeUpdate(sql);
-  		    		  
-  		  } catch (SQLException e) {
-  				e.printStackTrace();
+       		PreparedStatement stat = db.conn.prepareStatement(SQL);
+       		stat.setString(1, firstName);
+       		stat.setString(2, lastName);
+       		stat.setString(3, username);
+       		stat.setString(4, password);
+       		
+       		stat.executeUpdate();
+       		
+       	} catch (SQLException e) {
+       		e.printStackTrace();
   		}
        	db.closeConnection();
     }
@@ -37,12 +37,11 @@ public class UsersDB {
     public static User getUserByUsername(String aUsername) {   
 	   	db.connectMeIn();
 		String SQL = "SELECT * from Users";
-	    Statement stat;
 	   
 	    User aUser = new User();
 		try {
-			stat = db.conn.createStatement();
-			ResultSet rs = stat.executeQuery(SQL);
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			ResultSet rs = stat.executeQuery();
 			
 			while (rs.next()){
 				if(aUsername.equals( rs.getString(2) )) {
@@ -68,12 +67,11 @@ public class UsersDB {
 	public static User getUserById(int userId) {
 		db.connectMeIn();
 		String SQL = "SELECT * from Users";
-	    Statement stat;
 	   
 	    User aUser = new User();
 		try {
-			stat = db.conn.createStatement();
-			ResultSet rs = stat.executeQuery(SQL);
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			ResultSet rs = stat.executeQuery();
 			
 			while (rs.next()){
 				if(userId == rs.getInt(1)) {

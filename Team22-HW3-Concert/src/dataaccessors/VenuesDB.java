@@ -1,8 +1,8 @@
 package dataaccessors;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +17,12 @@ public class VenuesDB {
 	public static Venue getVenueById(int id) {
 		db.connectMeIn();
 		String SQL = "SELECT * from Venues";
-	    Statement stat;
 	    
 		Venue aVenue = new Venue();
 
 		try {
-			stat = db.conn.createStatement();
-			ResultSet rs = stat.executeQuery(SQL);
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			ResultSet rs = stat.executeQuery();
 			
 			while (rs.next()){
 				if(id == rs.getInt(1)) {
@@ -50,13 +49,12 @@ public class VenuesDB {
 	public static List<Venue> getAllVenues(){
 		db.connectMeIn();
 		String SQL = "SELECT * from Venues";
-	    Statement stat;
 	    
 	    List<Venue> venues = new ArrayList<Venue>();
 	    
 		try {
-			stat = db.conn.createStatement();
-			ResultSet rs = stat.executeQuery(SQL);
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			ResultSet rs = stat.executeQuery();
 			
 			while (rs.next()){
 				int venueId = rs.getInt(1);
