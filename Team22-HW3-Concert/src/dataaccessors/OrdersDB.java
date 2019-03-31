@@ -160,7 +160,7 @@ public class OrdersDB {
 
 	private static List<OrderItem> getOrderItemsByOrderId(int orderId) {
 		db.connectMeIn();
-		String SQL = "SELECT * FROM OrderItems WHERE orderId = " + orderId + ";";
+		String SQL = "SELECT * FROM OrderItems WHERE orderId = ?";
 		
 	    List<OrderItem> orderItems = new ArrayList<OrderItem>();
 	    
@@ -231,7 +231,7 @@ public class OrdersDB {
 
 	public static OrderItem getOrderItemById(int orderItemId) {
 		db.connectMeIn();
-		String SQL = "SELECT * FROM OrderItems WHERE id = ?" + orderItemId;
+		String SQL = "SELECT * FROM OrderItems WHERE id = ?";
 		
 		OrderItem anOrderItem = new OrderItem();
 	    
