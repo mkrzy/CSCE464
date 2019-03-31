@@ -54,7 +54,7 @@ public class ReviewsDB {
 		String returnMessage = "";
 		
 		String SQL1 = "SELECT * FROM CustomerReviews WHERE concertId = ?";
-		String SQL2 = "INSERT INTO CustomerReviews(concertId, userId, review, rating, reviewDate) VALUES (?, ?, ?, ?, DATE '?')";
+		String SQL2 = "INSERT INTO CustomerReviews(concertId, userId, review, rating, reviewDate) VALUES (?, ?, ?, ?, DATE ?)";
 		
 		
 		try {

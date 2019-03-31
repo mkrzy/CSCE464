@@ -31,7 +31,7 @@ public class OrdersDB {
 			int billingAddressId = anOrder.getBillingAddress().getId();
 			Date orderDate = anOrder.getOrderDate();
 
-			String SQL = "INSERT INTO Orders(customerId, totalCost, creditCardId, billingAddressId, orderDate) VALUES (?, ?, ?, ?, DATE '?')";
+			String SQL = "INSERT INTO Orders(customerId, totalCost, creditCardId, billingAddressId, orderDate) VALUES (?, ?, ?, ?, DATE ?)";
 
 			PreparedStatement stat = db.conn.prepareStatement(SQL);
 			stat.setInt(1, customerId);
@@ -47,7 +47,7 @@ public class OrdersDB {
 			message="Order was completed successfully.";
 	
 		} catch (SQLException e) {
-			message = CreditCardsDB.adjustCreditCardBalance(creditCard, (0-adjustment));
+			message = CreditCardsDB.adjustCreditCardBalance(creditCard, adjustment);
 			message = "There was a problem placing your order - you have been refunded for the charge";
 		}
 		db.closeConnection();

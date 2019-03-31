@@ -122,7 +122,7 @@ public class BankDB {
 				db.closeConnection();
 				return aCard;
 			} else {
-				String SQL2 = "INSERT INTO CreditCards(userId, cardHolderName, creditCardNumber, cardType, cvv, expirationDate, balance) VALUES (?, ?, ?, ?, ?, DATE '?', ?)";
+				String SQL2 = "INSERT INTO CreditCards(userId, cardHolderName, creditCardNumber, cardType, cvv, expirationDate, balance) VALUES (?, ?, ?, ?, ?, DATE ?, ?)";
 				
 				PreparedStatement stat2 = db.conn.prepareStatement(SQL2);
 				stat2.setInt(1, userId);
