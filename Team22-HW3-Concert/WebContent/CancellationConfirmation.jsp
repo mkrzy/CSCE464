@@ -7,11 +7,12 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Cancellation Confirmation</title>
 		<jsp:include page="Header.jsp" />
+		<%@ taglib prefix="c"  uri="http://java.sun.com/jstl/core_rt" %>
 	</head>
 	
 	<body>
 		<div class="container">
-			<h3>Cancelled Concert Tickets from Order Number: ${orderItemToCancel.containingOrder.id}</h3>
+			<h3>Cancelled Concert Tickets from Order Number: <c:out value="${orderItemToCancel.containingOrder.id}"/></h3>
 			Status: <span style="color: red">Cancelled</span>
 			
 			<br><br>
@@ -19,23 +20,23 @@
 			<table class="tbl colOneRight">
 				<tr>
 					<td>Concert Name: </td>
-					<td>${orderItemToCancel.performance.concert.name }</td>
+					<td><c:out value="${orderItemToCancel.performance.concert.name }"/></td>
 				</tr>
 				<tr>
 					<td>Ticket Quantity: </td>
-					<td>${orderItemToCancel.quantity}</td>
+					<td><c:out value="${orderItemToCancel.quantity}"/></td>
 				</tr>
 				<tr>
 					<td>Total Price: </td>
-					<td>${orderItemToCancel.getPrettyPrice()}</td>
+					<td><c:out value="${orderItemToCancel.getPrettyPrice()}"/></td>
 				</tr>
 				<tr>
 					<td>Venue Name: </td>
-					<td>${orderItemToCancel.performance.venue.name}</td>
+					<td><c:out value="${orderItemToCancel.performance.venue.name}"/></td>
 				</tr>
 				<tr>
 					<td>Date and Time: </td>
-					<td>${orderItemToCancel.performance.date} at ${orderItemToCancel.performance.startTime}</td>
+					<td><c:out value="${orderItemToCancel.performance.date} at ${orderItemToCancel.performance.startTime}"/></td>
 				</tr>
 			</table>
 		</div>

@@ -13,7 +13,7 @@
 	<script>
 		function viewOrderItem(){
 			var oi = event.srcElement.id;
-			document.getElementById("orderItemInput").value = oi;
+			document.getElementById("concertChoiceInput").value = oi;
 		}
 		
 		function confirm_function(){
@@ -61,9 +61,10 @@
 				state:state,
 				zip:zip
 			}, function(data,status){
-				
-				$("#results").html(data);
-				
+				alert(data);
+				if(data.indexOf("success") > -1){
+					window.location = "ViewOrders.jsp";
+				}
 			});
 			
 		}
@@ -75,11 +76,9 @@
 		
 		<div class="container">
 		
-		<p id="results"> </p>
-		
 			<h3>Payment and Shipping Information</h3>
-			<form name="orderItemDetails" id="orderItemDetails" action="orderItemDetails" method="post">
-				<input type="hidden" id="orderItemInput" name="orderItem" value="">
+				<form name="orderItemDetails" id="orderItemDetails" action="ConcertSearchResults" method="post">
+				<input type="hidden" id="concertChoiceInput" name="concertChoice" value="">
 				<table class="tbl colWider noBorder">
 					<tr>
 						<td>Concert Name</td>
@@ -89,11 +88,11 @@
 					</tr>
 					<c:forEach var="orderItem" items="${shoppingCart.orderItems}">
 						<tr>
-							<td>${orderItem.performance.concert.name}</td>
-							<td>${orderItem.quantity}</td>
-							<td>${orderItem.getPrettyPrice()}</td>
-							<td>${orderItem.performance.venue.name}</td>
-							<td><button id="${orderItem.id}" onclick="viewOrderItem()" class="btn btn-sm right">View Details</button></td>
+							<td><c:out value="${orderItem.performance.concert.name}"/></td>
+							<td><c:out value="${orderItem.quantity}"/></td>
+							<td><c:out value="${orderItem.getPrettyPrice()}"/></td>
+							<td><c:out value="${orderItem.performance.venue.name}"/></td>
+							<td><button id="${orderItem.performance.id}" onclick="viewOrderItem()" class="btn btn-sm right">View Details</button></td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -106,7 +105,7 @@
 					<input type="hidden" id="shoppingCartTotal" name="shoppingCartTotal" value="${shoppingCart.totalCost}">
 					<table class="tbl noBorder">
 						<tr>
-							<td>Total Cost: ${shoppingCart.getPrettyPrice()}</td>
+							<td><c:out value="Total Cost: ${shoppingCart.getPrettyPrice()}"/></td>
 						</tr>
 						<tr>
 							<td>First Name: </td>

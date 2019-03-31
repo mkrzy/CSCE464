@@ -35,28 +35,28 @@ pageEncoding="ISO-8859-1"%>
 							<td width="30%"></td>
 						</tr>
 						<tr>
-							<td colspan="3"><b>${orderItem.performance.concert.name}</b></td>
+							<td colspan="3"><b><c:out value="${orderItem.performance.concert.name}"/></b></td>
 								<td></td>
 								<td></td>
 						</tr>
 						<tr>
 							<td>Venue: </td>
-							<td>${orderItem.performance.venue.name}</td>
+							<td><c:out value="${orderItem.performance.venue.name}"/></td>
 							<td rowspan="4"><img src="${orderItem.performance.concert.thumbnail}" width="100%"></td>
 						</tr>
 						<tr>
 							<td>Showtime: </td>
-							<td>${orderItem.performance.date} at ${orderItem.performance.startTime}</td>
+							<td><c:out value="${orderItem.performance.date} at ${orderItem.performance.startTime}"/></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td>Number of Tickets: </td>
-							<td>${orderItem.quantity}</td>
+							<td><c:out value="${orderItem.quantity}"/></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td>Total Price: </td>
-							<td>${orderItem.getPrettyPrice()}</td>
+							<td><c:out value="${orderItem.getPrettyPrice()}"/></td>
 							<td></td>
 						</tr>
 						<tr>

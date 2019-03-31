@@ -33,28 +33,28 @@
 						<td width="30%"></td>
 					</tr>
 					<tr>
-						<td colspan="3"><b>${result.concert.name}</b></td>
+						<td colspan="3"><b><c:out value="${result.concert.name}"/></b></td>
 							<td></td>
 							<td></td>
 					</tr>
 					<tr>
 						<td>Venue Name: </td>
-						<td>${result.venue.name}</td>
+						<td><c:out value="${result.venue.name}"/></td>
 						<td rowspan="4"><img src="${result.concert.thumbnail}" width="100%"></td>
 					</tr>
 					<tr>
 						<td>Showtime: </td>
-						<td>${result.date} at ${result.startTime}</td>
+						<td><c:out value="${result.date} at ${result.startTime}"/></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td>Available Seats: </td>
-						<td>${result.getAvailableSeats()}</td>
+						<td><c:out value="${result.getAvailableSeats()}"/></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td>Ticket Price: </td>
-						<td>${result.getPrettyPrice()}</td>
+						<td><c:out value="${result.getPrettyPrice()}"/></td>
 						<td></td>
 					</tr>
 					<tr>

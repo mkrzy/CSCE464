@@ -29,23 +29,23 @@
 						<table class="tbl noBorder">
 							<tr>
 								<td>Concert Name: </td>
-								<td>${orderItem.performance.concert.name}</td>
+								<td><c:out value="${orderItem.performance.concert.name}"/></td>
 							</tr>
 							<tr>
 								<td>Ticket Quantity: </td>
-								<td>${orderItem.quantity}</td>
+								<td><c:out value="${orderItem.quantity}"/></td>
 							</tr>
 							<tr>
 								<td>Total Price: </td>
-								<td>${orderItem.getPrettyPrice()}</td>
+								<td><c:out value="${orderItem.getPrettyPrice()}"/></td>
 							</tr>
 							<tr>
 								<td>Venue Name: </td>
-								<td>${orderItem.performance.venue.name}</td>
+								<td><c:out value="${orderItem.performance.venue.name}"/></td>
 							</tr>
 							<tr>
 								<td>Date and Time: </td>
-								<td>${orderItem.performance.date} at ${orderItem.performance.startTime}</td>
+								<td><c:out value="${orderItem.performance.date} at ${orderItem.performance.startTime}"/></td>
 							</tr>
 							<c:if test = "${orderItem.cancelled}">
 								<tr>
@@ -75,8 +75,8 @@
 					
 				</div>
 				
-				<p>Order Total: ${order.getPrettyPrice()}</p>
-				<p>Ordered Date: ${order.orderDate}</p>
+				<p><c:out value="Order Total: ${order.getPrettyPrice()}"/></p>
+				<p><c:out value="Ordered Date: ${order.orderDate}"/></p>
 		</div>
 	</body>
 	

@@ -21,30 +21,30 @@
 	<body>
 		
 		<div class="container">
-			<h3>Order Number: ${orderItemToCancel.id}</h3>
+			<h3><c:out value="Order Number: ${orderItemToCancel.id}"/></h3>
 			<form name="cancelOrderItem" action="CancelOrderTransaction" method="post">
 				<input type="hidden" id="orderItemInput" name="orderItemId" value="">
 		
 				<table class="tbl colOneRight">
 					<tr>
 						<td>Concert Name: </td>
-						<td>${orderItemToCancel.performance.concert.name}</td>
+						<td><c:out value="${orderItemToCancel.performance.concert.name}"/></td>
 					</tr>
 					<tr>
 						<td>Ticket Quantity: </td>
-						<td>${orderItemToCancel.quantity}</td>
+						<td><c:out value="${orderItemToCancel.quantity}"/></td>
 					</tr>
 					<tr>
 						<td>Total Price: </td>
-						<td>${orderItemToCancel.getPrettyPrice()}</td>
+						<td><c:out value="${orderItemToCancel.getPrettyPrice()}"/></td>
 					</tr>
 					<tr>
 						<td>Venue Name: </td>
-						<td>${orderItemToCancel.performance.venue.name}</td>
+						<td><c:out value="${orderItemToCancel.performance.venue.name}"/></td>
 					</tr>
 					<tr>
 						<td>Date and Time: </td>
-						<td>${orderItemToCancel.performance.date} at ${orderItemToCancel.performance.startTime}</td>
+						<td><c:out value="${orderItemToCancel.performance.date} at ${orderItemToCancel.performance.startTime}"/></td>
 					</tr>
 				</table>		
 			<br>

@@ -33,10 +33,10 @@
 					</tr>
 					<c:forEach var="orderItem" items="${shoppingCart.orderItems}">
 						<tr>
-							<td>${orderItem.performance.concert.name}</td>
-							<td>${orderItem.quantity}</td>
-							<td>${orderItem.getPrettyPrice()}</td>
-							<td>${orderItem.performance.venue.name}</td>
+							<td><c:out value="${orderItem.performance.concert.name}"/></td>
+							<td><c:out value="${orderItem.quantity}"/></td>
+							<td><c:out value="${orderItem.getPrettyPrice()}"/></td>
+							<td><c:out value="${orderItem.performance.venue.name}"/></td>
 							<td><button id="${orderItem.id}" onclick="viewOrderItem()" class="btn btn-sm right">View Details</button></td>
 						</tr>
 					</c:forEach>

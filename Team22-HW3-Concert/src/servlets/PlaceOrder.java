@@ -70,7 +70,7 @@ public class PlaceOrder extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8"); 
 		PrintWriter out = response.getWriter(); 
 		
-		out.println("<html>"+returnMessage+"</html>");
+		out.println(returnMessage);
 	}
 
 	/**

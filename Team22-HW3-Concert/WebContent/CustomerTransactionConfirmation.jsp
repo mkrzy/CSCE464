@@ -25,28 +25,28 @@
 						<td width="30%"></td>
 					</tr>
 					<tr>
-						<td colspan="3"><b>${orderItem.performance.concert.name}</b></td>
+						<td colspan="3"><b><c:out value="${orderItem.performance.concert.name}"/></b></td>
 							<td></td>
 							<td></td>
 					</tr>
 					<tr>
 						<td>Venue Name: </td>
-						<td>${orderItem.performance.venue.name}</td>
+						<td><c:out value="${orderItem.performance.venue.name}"/></td>
 						<td rowspan="4"><img src="${orderItem.performance.concert.thumbnail}" width="100%"></td>
 					</tr>
 					<tr>
 						<td>Showtime: </td>
-						<td>${orderItem.performance.date} at ${orderItem.performance.startTime}</td>
+						<td><c:out value="${orderItem.performance.date} at ${orderItem.performance.startTime}"/></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td>Number of Tickets: </td>
-						<td>${orderItem.quantity}</td>
+						<td><c:out value="${orderItem.quantity}"/></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td>Total Price: </td>
-						<td>${orderItem.getPrettyPrice()}</td>
+						<td><c:out value="${orderItem.getPrettyPrice()}"/></td>
 						<td><button id="${orderItem.id}" onclick="Delete()" class="btn btn-sm right">Delete</button></td>
 					</tr>
 				</table>
@@ -57,23 +57,25 @@
 			<table class="tbl noBorder">
 				<tr>
 					<td>Total Cost: </td>
-					<td>${order.getPrettyPrice()}</td>
+					<td><c:out value="${order.getPrettyPrice()}"/></td>
 				</tr>
 				<tr>
 					<td>First Name: </td>
-					<td>${order.customer.firstName}</td>
+					<td><c:out value="${order.customer.firstName}"/></td>
 				</tr>
 				<tr>
 					<td>Last Name: </td>
-					<td>${order.customer.lastName}</td>
+					<td><c:out value="${order.customer.lastName}"/></td>
 				</tr>
 				<tr>
 					<td>Billing Address: </td>
 					<td>
-						${order.billingAddress.street},
-						${order.billingAddress.city},
-						${order.billingAddress.state}
-						${order.billingAddress.zip}
+						<c:out value="
+							${order.billingAddress.street},
+							${order.billingAddress.city},
+							${order.billingAddress.state}
+							${order.billingAddress.zip}
+						"></c:out>
 					</td>
 				</tr>
 				

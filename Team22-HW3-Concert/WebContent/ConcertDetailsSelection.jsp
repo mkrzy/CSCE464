@@ -143,7 +143,7 @@
 					</c:forEach>
 					
 					<tr>
-						<td class="colShrink"><span id="reviewerName">${userBean.getFullName()}</span></td>
+						<td class="colShrink"><span id="reviewerName"><c:out value="${userBean.getFullName()}"/></span></td>
 						<td class="colShrink"><span id="dateValue"></span></td>
 						<td class="colShrink"><input type="range" min="0" max="5" step="0.5" class="textInputNiceSmall" name="rating" id="rating"></td>
 						<td><input type="text" class="textInputNiceDynamic" id="review" name="review"></td>
