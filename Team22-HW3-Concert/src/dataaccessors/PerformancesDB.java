@@ -92,24 +92,24 @@ public class PerformancesDB {
 	
 	public static List<Performance> getPerformancesFromSearch(int venueId, String searchTerm){
 		db.connectMeIn();
-		String SQL = "SELECT * from Performances as p join Concerts as c on p.concertId = c.id join Venues as v on p.venueId = v.id where c.concertName like '%"+searchTerm+"%';";
-		String SQL2 = "SELECT * from Performances as p join Concerts as c on p.concertId = c.id join Venues as v on p.venueId = v.id where v.id = ? and c.concertName like '%?%';";
+		searchTerm = "%"+searchTerm+"%";
+		String SQL = "SELECT * from Performances as p join Concerts as c on p.concertId = c.id join Venues as v on p.venueId = v.id where c.concertName like ?";
+		String SQL2 = "SELECT * from Performances as p join Concerts as c on p.concertId = c.id join Venues as v on p.venueId = v.id where v.id = ? and c.concertName like ?";
 
 	    List<Performance> performances = new ArrayList<Performance>();
 	    
 		try {
+			PreparedStatement stat = db.conn.prepareStatement(SQL);
+			PreparedStatement stat2 = db.conn.prepareStatement(SQL2);
 			ResultSet rs;
+			
 			if(venueId > 0) {
-				PreparedStatement stat2 = db.conn.prepareStatement(SQL2);
 				stat2.setInt(1, venueId);
 				stat2.setString(2, searchTerm);
 				rs = stat2.executeQuery();
-			    stat2.close();
 			} else {
-				PreparedStatement stat = db.conn.prepareStatement(SQL);
 				stat.setString(1, searchTerm);
 				rs = stat.executeQuery();
-			    stat.close();
 			}
 			
 			while (rs.next()){
@@ -128,6 +128,9 @@ public class PerformancesDB {
 				Performance aPerformance = new Performance(performanceId, concert, venue, price, seatsPurchased, date, startTime, endTime);
 				performances.add(aPerformance);
 		    }
+			
+			stat.close();
+			stat2.close();
 		        
 		} catch (SQLException e) {
 			e.printStackTrace();

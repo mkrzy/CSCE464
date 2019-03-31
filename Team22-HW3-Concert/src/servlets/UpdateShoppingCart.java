@@ -64,9 +64,9 @@ public class UpdateShoppingCart extends HttpServlet {
 					if(!orderItemExisted) {
 						OrderItem orderItem = new OrderItem(performance, quantity);
 						orderItems.add(orderItem);
-						returnMessage = "Successfully added to cart";
 					}
 				}
+				returnMessage = "Successfully added to cart";
 			}
 		} else if (requestType.equals("delete")) {
 			

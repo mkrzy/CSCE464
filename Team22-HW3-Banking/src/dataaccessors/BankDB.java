@@ -76,9 +76,12 @@ public class BankDB {
 					db.closeConnection();
 					return "Transaction was not successful: insufficient funds";
 				} else {
-					String SQL2 = "UPDATE CreditCards SET balance = " + newBalance + " WHERE id = " + bankAccountId;
-					stat.executeUpdate(SQL2);
-					stat.close();
+					String SQL2 = "UPDATE CreditCards SET balance = ? WHERE id = ?";
+					PreparedStatement stat2 = db.conn.prepareStatement(SQL2);
+					stat2.setDouble(1, newBalance);
+					stat2.setInt(2, bankAccountId);
+					stat2.executeUpdate();
+					stat2.close();
 					db.closeConnection();
 					return "Transaction was a success!";
 				}
