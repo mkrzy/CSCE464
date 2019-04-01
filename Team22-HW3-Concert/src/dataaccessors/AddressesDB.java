@@ -4,14 +4,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import models.Address;
 
 public class AddressesDB {
 	private static Database db = new Database();
+	static Logger log = Logger.getLogger(AddressesDB.class);
 	
 	//only the AddressesDB class should access this method
 	private static void addAddress(String street, String city, String state, int zip) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(AddressesDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "INSERT INTO Addresses(street, city, state, postalCode) VALUES (?,?,?,?)";
 		
 		try {
@@ -24,12 +30,15 @@ public class AddressesDB {
 	  		stat.executeUpdate();
 			
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 	}
 	
 	public static Address getAddress(Address anAddress) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(AddressesDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String street = anAddress.getStreet();
 		String city = anAddress.getCity();
 		String state = anAddress.getState();
@@ -62,6 +71,7 @@ public class AddressesDB {
 			}
 			
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		return anAddress;
@@ -69,6 +79,8 @@ public class AddressesDB {
 	
 	public static Address getAddressById(int id) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(AddressesDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "SELECT * FROM Addresses";
 	    
 		Address anAddress = new Address();
@@ -91,6 +103,7 @@ public class AddressesDB {
 		    stat.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		

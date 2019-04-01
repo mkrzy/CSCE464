@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import models.Address;
 import models.CreditCard;
 import models.Performance;
@@ -16,9 +19,12 @@ import models.User;
 
 public class OrdersDB {
 	private static Database db = new Database();
+	static Logger log = Logger.getLogger(OrdersDB.class);
 
 	public static String addOrder(Order anOrder) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(OrdersDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		CreditCard creditCard = anOrder.getCreditCard();
 		double adjustment = anOrder.getTotalCost();
 		String message = "";
@@ -47,6 +53,7 @@ public class OrdersDB {
 			message="Order was completed successfully.";
 	
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			message = CreditCardsDB.adjustCreditCardBalance(creditCard, adjustment);
 			message = "There was a problem placing your order - you have been refunded for the charge";
 		}
@@ -56,6 +63,8 @@ public class OrdersDB {
 	
 	private static Order getOrder(Order anOrder) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(OrdersDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		int customerId = anOrder.getCustomer().getId();
 		double totalCost = anOrder.getTotalCost();
 		int creditCardId = anOrder.getCreditCard().getId();
@@ -86,6 +95,7 @@ public class OrdersDB {
 			} 
 			
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		return anOrder;
@@ -93,6 +103,8 @@ public class OrdersDB {
 
 	public static void addOrderItems(Order anOrder) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(OrdersDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		List<OrderItem> orderItems = anOrder.getOrderItems();
 		for (OrderItem orderItem : orderItems) {
 			Performance performance = orderItem.getPerformance();
@@ -114,6 +126,7 @@ public class OrdersDB {
 				stat.close();
 		
 			} catch (SQLException e) {
+				log.error("SQLException: ",e);
 				e.printStackTrace();
 			}
 		}
@@ -122,6 +135,8 @@ public class OrdersDB {
 
 	public static List<Order> getOrdersByCustomerId(int id) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(OrdersDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "SELECT * FROM Orders WHERE customerId = ?";
 		
 	    List<Order> orders = new ArrayList<Order>();
@@ -151,6 +166,7 @@ public class OrdersDB {
 		    stat.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -160,6 +176,8 @@ public class OrdersDB {
 
 	private static List<OrderItem> getOrderItemsByOrderId(int orderId) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(OrdersDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "SELECT * FROM OrderItems WHERE orderId = ?";
 		
 	    List<OrderItem> orderItems = new ArrayList<OrderItem>();
@@ -186,6 +204,7 @@ public class OrdersDB {
 		    stat.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -195,6 +214,8 @@ public class OrdersDB {
 
 	public static Order getOrderById(int orderId) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(OrdersDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "SELECT * FROM Orders WHERE id = ?";
 		
 		Order anOrder = new Order();
@@ -222,6 +243,7 @@ public class OrdersDB {
 		    stat.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -231,6 +253,8 @@ public class OrdersDB {
 
 	public static OrderItem getOrderItemById(int orderItemId) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(OrdersDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "SELECT * FROM OrderItems WHERE id = ?";
 		
 		OrderItem anOrderItem = new OrderItem();
@@ -255,6 +279,7 @@ public class OrdersDB {
 		    stat.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -264,6 +289,8 @@ public class OrdersDB {
 
 	public static void cancelOrderItem(OrderItem orderItemToCancel) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(OrdersDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		Order containingOrder = orderItemToCancel.getContainingOrder();
 		CreditCard creditCard = containingOrder.getCreditCard();
 		double adjustment = (0-orderItemToCancel.getPrice());
@@ -293,6 +320,7 @@ public class OrdersDB {
 			stat.close();
 	
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		db.closeConnection();		

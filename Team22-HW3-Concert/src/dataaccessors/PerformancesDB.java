@@ -8,15 +8,21 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import models.Concert;
 import models.Performance;
 import models.Venue;
 
 public class PerformancesDB {
 	private static Database db = new Database();
+	static Logger log = Logger.getLogger(PerformancesDB.class);
 
 	public static Performance getPerformanceById(int id) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(PerformancesDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "SELECT * from Performances";
 	    
 		Performance aPerformance = new Performance();
@@ -45,6 +51,7 @@ public class PerformancesDB {
 		    stat.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -54,6 +61,8 @@ public class PerformancesDB {
 	
 	public static List<Performance> getPerformancesByConcertId(int concertId){
 		db.connectMeIn();
+		PropertyConfigurator.configure(PerformancesDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "SELECT * from Performances WHERE id = ?";
 	    
 	    List<Performance> performances = new ArrayList<Performance>();
@@ -82,6 +91,7 @@ public class PerformancesDB {
 		    stat.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -92,6 +102,8 @@ public class PerformancesDB {
 	
 	public static List<Performance> getPerformancesFromSearch(int venueId, String searchTerm){
 		db.connectMeIn();
+		PropertyConfigurator.configure(PerformancesDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		searchTerm = "%"+searchTerm+"%";
 		String SQL = "SELECT * from Performances as p join Concerts as c on p.concertId = c.id join Venues as v on p.venueId = v.id where c.concertName like ?";
 		String SQL2 = "SELECT * from Performances as p join Concerts as c on p.concertId = c.id join Venues as v on p.venueId = v.id where v.id = ? and c.concertName like ?";
@@ -133,6 +145,7 @@ public class PerformancesDB {
 			stat2.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -143,6 +156,7 @@ public class PerformancesDB {
 
 	public static void updateSeatsPurchased(Performance performance, int adjustment) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(PerformancesDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
 		
 		int performanceId = performance.getId();
 		int originalQuantity = performance.getNumberPurchased();
@@ -160,6 +174,7 @@ public class PerformancesDB {
 			db.closeConnection();
 		
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 	}

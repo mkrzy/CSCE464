@@ -7,16 +7,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import models.Concert;
 import models.Review;
 import models.User;
 
 public class ReviewsDB {
 	private static Database db = new Database();
-
+	static Logger log = Logger.getLogger(ReviewsDB.class);
 	
 	public static List<Review> getReviewsByConcertId(int concertId){
 		db.connectMeIn();
+		PropertyConfigurator.configure(ReviewsDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "SELECT * from CustomerReviews";
 	    
 	    List<Review> reviews = new ArrayList<Review>();
@@ -42,6 +47,7 @@ public class ReviewsDB {
 		    stat.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -51,6 +57,8 @@ public class ReviewsDB {
 	
 	public static String addReview(Review aReview) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(ReviewsDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String returnMessage = "";
 		
 		String SQL1 = "SELECT * FROM CustomerReviews WHERE concertId = ?";
@@ -88,6 +96,7 @@ public class ReviewsDB {
 			stat2.close();
 	
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 			returnMessage = "Error - Something went wrong.";
 		}

@@ -4,14 +4,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import models.User;
 
 public class UsersDB {
 	
 	private static Database db = new Database();
+	static Logger log = Logger.getLogger(UsersDB.class);
 
     public static void registerUser(User aUser) {
        	db.connectMeIn();
+		PropertyConfigurator.configure(UsersDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
        	try {
        		String SQL = "INSERT INTO Users (FirstName, LastName, Username, Password) VALUES (?,?,?,?)";
   		  
@@ -29,6 +35,7 @@ public class UsersDB {
        		stat.executeUpdate();
        		
        	} catch (SQLException e) {
+			log.error("SQLException: ",e);
        		e.printStackTrace();
   		}
        	db.closeConnection();
@@ -36,6 +43,8 @@ public class UsersDB {
     
     public static User getUserByUsername(String aUsername) {   
 	   	db.connectMeIn();
+		PropertyConfigurator.configure(UsersDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "SELECT * from Users";
 	   
 	    User aUser = new User();
@@ -57,6 +66,7 @@ public class UsersDB {
 		    stat.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -66,6 +76,8 @@ public class UsersDB {
 	
 	public static User getUserById(int userId) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(UsersDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "SELECT * from Users";
 	   
 	    User aUser = new User();
@@ -85,6 +97,7 @@ public class UsersDB {
 		    stat.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		db.closeConnection();

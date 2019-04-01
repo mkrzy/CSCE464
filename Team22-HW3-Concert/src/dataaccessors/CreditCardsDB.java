@@ -5,14 +5,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import models.CreditCard;
 import models.User;
 
 public class CreditCardsDB {
 	private static Database db = new Database();
+	static Logger log = Logger.getLogger(CreditCardsDB.class);
 
 	public static CreditCard getCreditCardById(int creditCardId) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(CreditCardsDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
 	    
 	    CreditCard aCreditCard = new CreditCard();
 	    String SQL = "SELECT * FROM CreditCards WHERE id = ?";
@@ -38,6 +43,7 @@ public class CreditCardsDB {
 		    }
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -47,6 +53,7 @@ public class CreditCardsDB {
 	
 	public static CreditCard getCreditCardByNumber(String creditCardNumber) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(CreditCardsDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
 	    
 	    CreditCard aCreditCard = new CreditCard();
 	    String SQL = "SELECT * FROM CreditCards WHERE creditCardNumber = ?";
@@ -73,6 +80,7 @@ public class CreditCardsDB {
 		    }
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -82,6 +90,8 @@ public class CreditCardsDB {
 	
 	public static String adjustCreditCardBalance(CreditCard aCard, double adjustment) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(CreditCardsDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String creditCardNumber = aCard.getCreditCardNumber();
 		String cardHolderName = aCard.getCardHolderName();
 		String cardType = aCard.getCardType();
@@ -130,6 +140,7 @@ public class CreditCardsDB {
 			}
 			
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -138,6 +149,8 @@ public class CreditCardsDB {
 
 	public static CreditCard addCreditCard(CreditCard aCard) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(CreditCardsDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		int userId = aCard.getUser().getId();
 		String cardHolderName = aCard.getCardHolderName();
 		String creditCardNumber = aCard.getCreditCardNumber();
@@ -177,6 +190,7 @@ public class CreditCardsDB {
 				return CreditCardsDB.addCreditCard(aCard);
 			}
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		return aCard;

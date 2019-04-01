@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import models.Address;
 import models.User;
 import models.Venue;
@@ -13,9 +16,12 @@ import models.Venue;
 public class VenuesDB {
 	
 	private static Database db = new Database();
+	static Logger log = Logger.getLogger(VenuesDB.class);
     
 	public static Venue getVenueById(int id) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(VenuesDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "SELECT * from Venues";
 	    
 		Venue aVenue = new Venue();
@@ -39,6 +45,7 @@ public class VenuesDB {
 		    stat.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -48,6 +55,8 @@ public class VenuesDB {
 	
 	public static List<Venue> getAllVenues(){
 		db.connectMeIn();
+		PropertyConfigurator.configure(VenuesDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "SELECT * from Venues";
 	    
 	    List<Venue> venues = new ArrayList<Venue>();
@@ -72,6 +81,7 @@ public class VenuesDB {
 		    stat.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		

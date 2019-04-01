@@ -4,14 +4,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import models.Concert;
 
 public class ConcertsDB {
 
 	private static Database db = new Database();
+	static Logger log = Logger.getLogger(ConcertsDB.class);
 	
 	public static Concert getConcertById(int id) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(ConcertsDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String SQL = "SELECT * FROM Concerts";
 	    
 		Concert aConcert = new Concert();
@@ -33,6 +39,7 @@ public class ConcertsDB {
 		    stat.close();
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		

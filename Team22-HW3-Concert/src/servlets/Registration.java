@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import models.User;
 import other.PasswordUtil;
 import dataaccessors.UsersDB;
@@ -19,6 +22,7 @@ import dataaccessors.UsersDB;
 @WebServlet("/Registration")
 public class Registration extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static Logger log = Logger.getLogger(Registration.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -32,6 +36,8 @@ public class Registration extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PropertyConfigurator.configure(getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String firstName = request.getParameter("firstName");
@@ -51,6 +57,7 @@ public class Registration extends HttpServlet {
 			response.sendRedirect("Login.jsp");
 			
 		} catch (NoSuchAlgorithmException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 	}
