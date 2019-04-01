@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.User;
+import other.PasswordUtil;
 import dataaccessors.UsersDB;
 
 /**
@@ -34,15 +36,23 @@ public class Registration extends HttpServlet {
 		String password = request.getParameter("password");
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
-		User aUser = new User(username, password, firstName, lastName);
-						
-		boolean userExists = UsersDB.userExists(username);
 		
-		if(!userExists) {
-			UsersDB.registerUser(aUser);
+		try {
+			String hashPassword = PasswordUtil.hashPasswordAlternative(password);
+			
+			User aUser = new User(username, hashPassword, firstName, lastName);
+							
+			boolean userExists = UsersDB.userExists(username);
+			
+			if(!userExists) {
+				UsersDB.registerUser(aUser);
+			}
+			
+			response.sendRedirect("Login.jsp");
+			
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
 		}
-		
-		response.sendRedirect("Login.jsp");
 	}
 
 	/**
