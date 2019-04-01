@@ -5,13 +5,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import models.BankAccount;
 
 public class BankDB {
 	private static Database db = new Database();
+	static Logger log = Logger.getLogger(BankDB.class);
 
 	public static BankAccount getBankAccountById(int bankAccountId) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(BankDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
 	    
 		BankAccount aBankAccount = new BankAccount();
 	    String SQL = "SELECT * FROM CreditCards WHERE id = ?";
@@ -35,6 +40,7 @@ public class BankDB {
 		    }
 		        
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -44,6 +50,8 @@ public class BankDB {
 	
 	public static String adjustBankAccountBalance(BankAccount aCard, double adjustment) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(BankDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		String bankAccountNumber = aCard.getBankAccountNumber();
 		String cardHolderName = aCard.getCardHolderName();
 		String cardType = aCard.getCardType();
@@ -92,6 +100,7 @@ public class BankDB {
 			}
 			
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		
@@ -100,6 +109,8 @@ public class BankDB {
 
 	public static BankAccount addBankAccount(BankAccount aCard) {
 		db.connectMeIn();
+		PropertyConfigurator.configure(BankDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("classes", "lib")+"log4j.properties");
+		
 		int userId = aCard.getUserId();
 		String cardHolderName = aCard.getCardHolderName();
 		String bankAccountNumber = aCard.getBankAccountNumber();
@@ -139,6 +150,7 @@ public class BankDB {
 				return BankDB.addBankAccount(aCard);
 			}
 		} catch (SQLException e) {
+			log.error("SQLException: ",e);
 			e.printStackTrace();
 		}
 		return aCard;		
