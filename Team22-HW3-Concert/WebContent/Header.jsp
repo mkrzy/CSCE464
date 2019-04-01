@@ -14,7 +14,7 @@
 			<form name="viewOrders" action="ViewOrders" method="post"><button class="viewOrdersButton btn">View Orders</button></form>
 			<a href="Login.jsp"><button class="logoutButton btn right">Logout</button></a>
 			<c:if test = "${shoppingCart.getTotalCost() > 0}">
-				<a href="ConfirmOrder.jsp"><button class="checkoutButton btn right" style="text-decoration: underline">Checkout</button></a>
+				<a href="ViewAndCheckoutShoppingCart.jsp"><button class="checkoutButton btn right" style="text-decoration: underline">Checkout</button></a>
 			</c:if>
 		</div>
 	</body>

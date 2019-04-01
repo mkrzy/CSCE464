@@ -89,36 +89,44 @@
 				<table class="tbl noBorder">
 				
 					<tr>
-						<td>Concert Name</td>
-						<td><c:out value="${performance.concert.name}"></c:out></td>
+						<td colspan="2"><b><c:out value="${performance.concert.name}"></c:out></b></td>
+						<td></td>
+						<td rowspan="8" width="40%"><img src="${performance.concert.thumbnail}" width="100%"></td>
 					</tr>
 					<tr>
-						<td>Concert Description</td>
-						<td width="100%"><c:out value="${performance.concert.description}"></c:out></td>
+						<td colspan="2"><c:out value="${performance.concert.description}"></c:out></td>
+						<td></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td>Concert Rating</td>
 						<td><c:out value="${performance.concert.rating}"></c:out></td>
-					</tr>
-					<tr>
-						<td>Concert Poster</td>
-						<td><img src="${performance.concert.thumbnail}" width="50%"></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td>Venue Name</td>
 						<td><c:out value="${performance.venue.name}"></c:out></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td>Showtime</td>
 						<td><c:out value="${performance.date} at ${performance.startTime}"></c:out></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td>Ticket Price</td>
 						<td><c:out value="${performance.getPrettyPrice()}"></c:out></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td>Available Seats</td>
 						<td><c:out value="${performance.getAvailableSeats()}"></c:out></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
 					</tr>
 					
 				</table><br>

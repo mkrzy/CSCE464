@@ -68,10 +68,19 @@ public class UpdateShoppingCart extends HttpServlet {
 				}
 				returnMessage = "Successfully added to cart";
 			}
-		} else if (requestType.equals("delete")) {
 			
-			int orderItemDelete = Integer.parseInt(request.getParameter("orderItemDelete"));
-			orderItems.remove(orderItemDelete);
+		} else if (requestType.equals("delete")) {
+			System.out.println(request.getParameter("performanceId"));
+			int performanceId = Integer.parseInt(request.getParameter("performanceId"));
+			OrderItem itemToDelete = new OrderItem();
+			for(OrderItem item : orderItems){
+				if(item.getPerformance().getId() == performanceId) {
+					itemToDelete = item;
+					break;
+				}
+			}
+			orderItems.remove(itemToDelete);
+			returnMessage = "Item successfully removed from your cart";
 			
 		}
 		

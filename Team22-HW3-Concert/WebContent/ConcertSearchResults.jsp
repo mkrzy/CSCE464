@@ -30,12 +30,12 @@
 					<tr>
 						<td></td>
 						<td></td>
-						<td width="30%"></td>
+						<td width="25%"></td>
 					</tr>
 					<tr>
 						<td colspan="3"><b><c:out value="${result.concert.name}"/></b></td>
-							<td></td>
-							<td></td>
+						<td></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td>Venue Name: </td>
