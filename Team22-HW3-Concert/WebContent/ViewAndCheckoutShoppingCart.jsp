@@ -27,7 +27,7 @@ pageEncoding="ISO-8859-1"%>
 				
 				if(data.indexOf("successfully removed") > -1){
 					window.location = "CustomerHomePage.jsp";
-				}				
+				}
 			});
 		}
 	</script>

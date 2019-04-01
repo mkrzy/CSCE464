@@ -70,7 +70,6 @@ public class UpdateShoppingCart extends HttpServlet {
 			}
 			
 		} else if (requestType.equals("delete")) {
-			System.out.println(request.getParameter("performanceId"));
 			int performanceId = Integer.parseInt(request.getParameter("performanceId"));
 			OrderItem itemToDelete = new OrderItem();
 			for(OrderItem item : orderItems){
