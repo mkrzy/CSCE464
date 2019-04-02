@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
-	<display-name>Team22-HW3-Concert</display-name>
+	<display-name>ConcertMarketplace</display-name>
 	<welcome-file-list>
 		<welcome-file>Login.jsp</welcome-file>
 	</welcome-file-list>
 	
 	<context-param>
-		<param-name>dbURL</param-name>
-		<param-value>jdbc:mysql://cse.unl.edu:3306/mkrzycki</param-value>
-	</context-param>
-	<context-param>
-		<param-name>dbUser</param-name>
-		<param-value>mkrzycki</param-value>
-	</context-param>
-	<context-param>
-		<param-name>dbPass</param-name>
-		<param-value>MiLeKr97</param-value>
+		<param-name>webappName</param-name>
+		<param-value>Team22-HW3-Concert</param-value>
 	</context-param>
 	
 	<error-page>
@@ -26,5 +18,9 @@
 	<error-page>
 		<location>/error.jsp</location>
 	</error-page>
+	
+	<session-config>
+		<session-timeout>10</session-timeout>
+	</session-config>
 
 </web-app>

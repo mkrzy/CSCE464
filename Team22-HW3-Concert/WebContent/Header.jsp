@@ -4,7 +4,8 @@
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
-		<link rel="stylesheet" href="/Team22-HW3-Concert/css/style.css" type="text/css">
+		<% String name=getServletContext().getInitParameter("webappName").toString();%>
+		<link rel="stylesheet" href="/<%=name%>/css/style.css" type="text/css">
 		<%@ taglib prefix="c"  uri="http://java.sun.com/jstl/core_rt" %>
 	</head>
 	
