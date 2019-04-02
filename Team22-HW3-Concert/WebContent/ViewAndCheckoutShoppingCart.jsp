@@ -77,7 +77,7 @@ pageEncoding="ISO-8859-1"%>
 						<tr>
 							<td></td>
 							<td></td>
-							<td><button type="button" id="${orderItem.performance.id}" onClick="delete_from_cart_function()" class="btn btn-sm right">Delete ${orderItem.performance.id}</button></td>
+							<td><button type="button" id="${orderItem.performance.id}" onClick="delete_from_cart_function()" class="btn btn-sm right">Delete</button></td>
 						</tr>
 					</table>
 					<br>

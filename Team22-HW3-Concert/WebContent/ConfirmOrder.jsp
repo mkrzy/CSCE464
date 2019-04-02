@@ -17,7 +17,7 @@
 		}
 		
 		function confirm_function(){
-		
+			
 			var firstName = $("#firstName").val();
 			var lastName  = $("#lastName").val();
 			var userId = $("#userId").val();
@@ -48,6 +48,8 @@
 		}
 		
 		function place_order_function(){
+			var username = $("#username").val();
+			var password = $("#password").val();
 			var cardNumber = $("#cardNumber").val();
 			var street = $("#street").val();
 			var city = $("#city").val();
@@ -55,6 +57,8 @@
 			var zip = $("#zip").val();
 			
 			$.post("../Team22-HW3-Concert/PlaceOrder", {
+		    	username:username,
+		    	password:password,
 				cardNumber:cardNumber,
 				street:street,
 				city:city,
@@ -67,6 +71,12 @@
 				}
 			});
 			
+		}
+		
+		function reauthenticate_function(){
+			$("#userFormData").show();
+			$("#confirmButton").show();
+			$("#reauthButton").hide();
 		}
 		
 	</script>
@@ -249,11 +259,20 @@
 						
 					</table>
 					
+					<div id="userFormData" style="display:none">
+						<br>
+						<p>Please reauthenticate user:</p>
+						Username: <input type="text" name="username" id="username" class="textInputNice">
+						Password: <input type="text" name="password" id="password" class="textInputNice">
+						<br><br><br>
+					</div>
+					
 					
 				</form>
 			</div>
 			
-			<button type="button" class="btn" onClick="confirm_function()">Confirm Payment</button>
+			<button type="button" id="confirmButton" style="display:none" class="btn" onClick="confirm_function()">Confirm Payment</button>
+			<button type="button" id="reauthButton" class="btn" onClick="reauthenticate_function()">Confirm Payment</button>
 			<button class="btn" onclick="history.back()">Cancel Payment</button>			
 		</div>
 	</body>

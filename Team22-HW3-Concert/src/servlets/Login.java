@@ -16,12 +16,14 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import models.Order;
 import models.OrderItem;
 import models.ShoppingCart;
 import models.Venue;
 import other.PasswordUtil;
 import models.User;
 import dataaccessors.VenuesDB;
+import dataaccessors.OrdersDB;
 import dataaccessors.UsersDB;
 
 /**
@@ -52,15 +54,18 @@ public class Login extends HttpServlet {
 			
 			User aUser = new User();
 			ShoppingCart aShoppingCart = new ShoppingCart(new ArrayList<OrderItem>());
+			List<Order> orders = new ArrayList<Order>();
 					
 			boolean userExists = UsersDB.userExists(username);
 			boolean userPasswordMatches = UsersDB.verifyUser(username, hashPassword);
 			
 			if(userExists && userPasswordMatches) {
 				aUser = UsersDB.getUserByUsername(username);
+				orders = OrdersDB.getOrdersByCustomerId(aUser.getId());
 				HttpSession session = request.getSession();
 			    session.setAttribute("userBean", aUser);
 			    session.setAttribute("shoppingCart", aShoppingCart);
+			    session.setAttribute("orders", orders);
 			    
 			    List<Venue> venues = new ArrayList<Venue>();
 				venues = VenuesDB.getAllVenues();
