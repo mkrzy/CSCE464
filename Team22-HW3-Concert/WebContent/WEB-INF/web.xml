@@ -24,7 +24,11 @@
 	</session-config>
 	
 	<security-constraint>
-		<!-- set the value to "CONFIDENTIAL" to enable SSL and "NONE" to disable -->
+		<web-resource-collection>
+			<web-resource-name></web-resource-name>
+			<url-pattern>/ViewOrders/</url-pattern>
+			<url-pattern>/ConfirmOrder.jsp/</url-pattern>
+		</web-resource-collection>
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 		</user-data-constraint>
