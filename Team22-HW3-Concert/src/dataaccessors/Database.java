@@ -18,8 +18,8 @@ public class Database {
 	static final String DB_URL = "jdbc:mysql://cse.unl.edu:3306/mkrzycki";
 	
 	//  Database credentials
-	static final String USER = "mkrzycki"; // Replace with your CSE_LOGIN
-	static final String PASS = "MiLeKr97";   // Replace with your CSE MySQL_PASSWORD
+	static final String USER = ""; // Replace with your CSE_LOGIN
+	static final String PASS = "";   // Replace with your CSE MySQL_PASSWORD
 	
 	
 	public void connectMeIn() {
